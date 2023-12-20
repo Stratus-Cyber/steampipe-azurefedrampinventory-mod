@@ -54,37 +54,66 @@ WITH
       azure_compute_virtual_machine
     where
       power_state = 'running'
+  ),
+    webapp_vnet_subnet as (
+    SELECT
+      vnet_connection -> 'properties' ->> 'vnetResourceId' as "VNet",
+      id as "webapp_id"
+    FROM
+      azure_app_service_web_app
+  ),
+  aks_agent_pool_profiles as 
+(
+
+SELECT
+id as "kubernetes_id",
+agent_pool_profiles -> 0 ->> 'vnetSubnetID' as "VNet"
+FROM
+azure_kubernetes_cluster
+),
+
+ cvm_network_interface_subnet as (
+    SELECT
+      ip_configurations -> 0 -> 'properties' -> 'subnet' ->> 'id' as "VNet",
+      id as "network_interface_id"
+    FROM
+      azure_network_interface
   )
   -- Azure App Service Web App
   --added virtual field
 SELECT
-  title as "Unique Asset Identifier",
-  '' as "IPv4 or IPv6 Address",
-  'Yes' as "Virtual",
-  '' as "Public",
-  '' as "DNS Name or URL",
-  '' as "NetBIOS Name",
-  '' as "MAC Address",
-  tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
-  '' as "OS Name and Version",
-  --region as "Location",
+
+	title as "Unique Asset Identifier",
+	'' as "IPv4 or IPv6 Address",
+	  'Yes' as "Virtual",
+	'' as "Public",
+	'' as "DNS Name or URL",
+	'' as "NetBIOS Name",
+	'' as "MAC Address",
+	tags ->> 'Authenticated Scan' as "Authenticated Scan",
+	tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+	'' as "OS Name and Version",
    cloud_environment || '-' || region as "Location",
-  'Azure App Service Web App' as "Asset Type",
-  '' as "Hardware Make/Model",
-  '' as "In Latest Scan",
-  '' as "Software/Database Vendor",
-  '' as "Software/Database Name & Version",
-  '' as "Patch Level",
-  '' as "Diagram Label",
-  id as "Serial #/Asset Tag#",
-  '' as "VLAN/Network ID",
-  tags ->> 'Application Owner' as "Application Owner",
-  tags ->> 'System Owner' as "System Owner",
-  tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+	'Azure App Service Web App' as "Asset Type",
+	'' as "Hardware Make/Model",
+	'' as "In Latest Scan",
+	'' as "Software/Database Vendor",
+	'' as "Software/Database Name & Version",
+	'' as "Patch Level",
+	'' as "Diagram Label",
+	id as "Serial #/Asset Tag#",
+substring(
+  webapp_vnet_subnet."VNet",
+  strpos(webapp_vnet_subnet."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
+  strpos(webapp_vnet_subnet."VNet", '/subnets/') - strpos(webapp_vnet_subnet."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
+) as "VLAN/Network ID",
+	tags ->> 'Application Owner' as "Application Owner",
+	tags ->> 'System Owner' as "System Owner",
+	tags ->> 'Function' as "Function",
+	'' as "End-of-Life"
 FROM
-  azure_app_service_web_app
+	azure_app_service_web_app
+	left join webapp_vnet_subnet ON webapp_vnet_subnet."webapp_id" = azure_app_service_web_app.id
 UNION
 --Azure CosmosDB Database
 SELECT
@@ -147,7 +176,7 @@ FROM
   azure_frontdoor
 UNION
 --Kubertes Cluster Inventory
-SELECT
+SELECT 
   title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
@@ -168,13 +197,18 @@ SELECT
   '' as "Patch Level",
   '' as "Diagram Label",
   id as "Serial #/Asset Tag#",
-  '' as "VLAN/Network ID",
+substring(
+  aks_agent_pool_profiles."VNet",
+  strpos(aks_agent_pool_profiles."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
+  strpos(aks_agent_pool_profiles."VNet", '/subnets/') - strpos(aks_agent_pool_profiles."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
+) as "VLAN/Network ID",
   tags ->> 'Application Owner' as "Application Owner",
   tags ->> 'System Owner' as "System Owner",
   tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
   azure_kubernetes_cluster
+  	left join aks_agent_pool_profiles ON aks_agent_pool_profiles."kubernetes_id" = azure_kubernetes_cluster.id
 UNION
 -- Load Balancer Inventory
 --Commented out "Comments" tag so fields length can match
@@ -351,10 +385,10 @@ FROM
   left join public_ips ON public_ips.id = ip_configurations -> 0 -> 'properties' -> 'publicIPAddress' ->> 'id'
 UNION
 --Azure VM Fedramp Inventory
-select
+select 
   name as "Unique Asset Identifier",
   CASE
-    WHEN "IP_Type" = 'Private' THEN "IP"
+   WHEN "IP_Type" = 'Private' THEN "IP"
   END as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
   CASE
@@ -375,16 +409,21 @@ select
   '' as "Patch Level",
   '' as "Diagram Label",
   id as "Serial #/Asset Tag#",
-  '' as "VLAN/Network ID",
+  substring(
+    cvm_nic."VNet",
+    strpos(cvm_nic."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
+    strpos(cvm_nic."VNet", '/subnets/') - strpos(cvm_nic."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
+  ) as "VLAN/Network ID",
   tags ->> 'Application Owner' as "Application Owner",
   tags ->> 'System Owner' as "System Owner",
   tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  '' as "End-of-Life"  
 from
-  azure_compute_virtual_machine cvm
-  left join all_ips ON all_ips.vm_id = cvm.vm_id
+      azure_compute_virtual_machine cvm
+      left join all_ips ON all_ips.vm_id = cvm.vm_id
+      left join cvm_network_interface_subnet cvm_nic ON cvm_nic.network_interface_id =  cvm.network_interfaces -> 0 ->> 'id'
 where
-  power_state = 'running'
+  power_state='running'
 	
 
 
@@ -471,37 +510,66 @@ WITH
       azure_compute_virtual_machine
     where
       power_state = 'running'
+  ),
+    webapp_vnet_subnet as (
+    SELECT
+      vnet_connection -> 'properties' ->> 'vnetResourceId' as "VNet",
+      id as "webapp_id"
+    FROM
+      azure_app_service_web_app
+  ),
+  aks_agent_pool_profiles as 
+(
+
+SELECT
+id as "kubernetes_id",
+agent_pool_profiles -> 0 ->> 'vnetSubnetID' as "VNet"
+FROM
+azure_kubernetes_cluster
+),
+
+ cvm_network_interface_subnet as (
+    SELECT
+      ip_configurations -> 0 -> 'properties' -> 'subnet' ->> 'id' as "VNet",
+      id as "network_interface_id"
+    FROM
+      azure_network_interface
   )
   -- Azure App Service Web App
   --added virtual field
 SELECT
-  title as "Unique Asset Identifier",
-  '' as "IPv4 or IPv6 Address",
-  'Yes' as "Virtual",
-  '' as "Public",
-  '' as "DNS Name or URL",
-  '' as "NetBIOS Name",
-  '' as "MAC Address",
-  tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
-  '' as "OS Name and Version",
-  --region as "Location",
+
+	title as "Unique Asset Identifier",
+	'' as "IPv4 or IPv6 Address",
+	  'Yes' as "Virtual",
+	'' as "Public",
+	'' as "DNS Name or URL",
+	'' as "NetBIOS Name",
+	'' as "MAC Address",
+	tags ->> 'Authenticated Scan' as "Authenticated Scan",
+	tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+	'' as "OS Name and Version",
    cloud_environment || '-' || region as "Location",
-  'Azure App Service Web App' as "Asset Type",
-  '' as "Hardware Make/Model",
-  '' as "In Latest Scan",
-  '' as "Software/Database Vendor",
-  '' as "Software/Database Name & Version",
-  '' as "Patch Level",
-  '' as "Diagram Label",
-  id as "Serial #/Asset Tag#",
-  '' as "VLAN/Network ID",
-  tags ->> 'Application Owner' as "Application Owner",
-  tags ->> 'System Owner' as "System Owner",
-  tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+	'Azure App Service Web App' as "Asset Type",
+	'' as "Hardware Make/Model",
+	'' as "In Latest Scan",
+	'' as "Software/Database Vendor",
+	'' as "Software/Database Name & Version",
+	'' as "Patch Level",
+	'' as "Diagram Label",
+	id as "Serial #/Asset Tag#",
+substring(
+  webapp_vnet_subnet."VNet",
+  strpos(webapp_vnet_subnet."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
+  strpos(webapp_vnet_subnet."VNet", '/subnets/') - strpos(webapp_vnet_subnet."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
+) as "VLAN/Network ID",
+	tags ->> 'Application Owner' as "Application Owner",
+	tags ->> 'System Owner' as "System Owner",
+	tags ->> 'Function' as "Function",
+	'' as "End-of-Life"
 FROM
-  azure_app_service_web_app
+	azure_app_service_web_app
+	left join webapp_vnet_subnet ON webapp_vnet_subnet."webapp_id" = azure_app_service_web_app.id
 UNION
 --Azure CosmosDB Database
 SELECT
@@ -564,7 +632,7 @@ FROM
   azure_frontdoor
 UNION
 --Kubertes Cluster Inventory
-SELECT
+SELECT 
   title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
@@ -585,13 +653,18 @@ SELECT
   '' as "Patch Level",
   '' as "Diagram Label",
   id as "Serial #/Asset Tag#",
-  '' as "VLAN/Network ID",
+substring(
+  aks_agent_pool_profiles."VNet",
+  strpos(aks_agent_pool_profiles."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
+  strpos(aks_agent_pool_profiles."VNet", '/subnets/') - strpos(aks_agent_pool_profiles."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
+) as "VLAN/Network ID",
   tags ->> 'Application Owner' as "Application Owner",
   tags ->> 'System Owner' as "System Owner",
   tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
   azure_kubernetes_cluster
+  	left join aks_agent_pool_profiles ON aks_agent_pool_profiles."kubernetes_id" = azure_kubernetes_cluster.id
 UNION
 -- Load Balancer Inventory
 --Commented out "Comments" tag so fields length can match
@@ -768,10 +841,10 @@ FROM
   left join public_ips ON public_ips.id = ip_configurations -> 0 -> 'properties' -> 'publicIPAddress' ->> 'id'
 UNION
 --Azure VM Fedramp Inventory
-select
+select 
   name as "Unique Asset Identifier",
   CASE
-    WHEN "IP_Type" = 'Private' THEN "IP"
+   WHEN "IP_Type" = 'Private' THEN "IP"
   END as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
   CASE
@@ -792,17 +865,21 @@ select
   '' as "Patch Level",
   '' as "Diagram Label",
   id as "Serial #/Asset Tag#",
-  '' as "VLAN/Network ID",
+  substring(
+    cvm_nic."VNet",
+    strpos(cvm_nic."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
+    strpos(cvm_nic."VNet", '/subnets/') - strpos(cvm_nic."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
+  ) as "VLAN/Network ID",
   tags ->> 'Application Owner' as "Application Owner",
   tags ->> 'System Owner' as "System Owner",
   tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  '' as "End-of-Life"  
 from
-  azure_compute_virtual_machine cvm
-  left join all_ips ON all_ips.vm_id = cvm.vm_id
+      azure_compute_virtual_machine cvm
+      left join all_ips ON all_ips.vm_id = cvm.vm_id
+      left join cvm_network_interface_subnet cvm_nic ON cvm_nic.network_interface_id =  cvm.network_interfaces -> 0 ->> 'id'
 where
-  power_state = 'running'
-
+  power_state='running'
 
 	
 
