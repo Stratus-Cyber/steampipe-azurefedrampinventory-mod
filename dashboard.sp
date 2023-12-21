@@ -86,12 +86,13 @@ SELECT
 	title as "Unique Asset Identifier",
 	'' as "IPv4 or IPv6 Address",
 	  'Yes' as "Virtual",
-	'' as "Public",
+    tags ->> 'Public' as "Public",
+	--'' as "Public",
 	'' as "DNS Name or URL",
 	'' as "NetBIOS Name",
 	'' as "MAC Address",
-	tags ->> 'Authenticated Scan' as "Authenticated Scan",
-	tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+	tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+	tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
 	'' as "OS Name and Version",
    cloud_environment || '-' || region as "Location",
 	'Azure App Service Web App' as "Asset Type",
@@ -107,7 +108,7 @@ substring(
   strpos(webapp_vnet_subnet."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
   strpos(webapp_vnet_subnet."VNet", '/subnets/') - strpos(webapp_vnet_subnet."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
 ) as "VLAN/Network ID",
-	tags ->> 'Application Owner' as "Application Owner",
+	tags ->> 'Application_Owner' as "Application Owner",
 	tags ->> 'System Owner' as "System Owner",
 	tags ->> 'Function' as "Function",
 	'' as "End-of-Life"
@@ -120,12 +121,13 @@ SELECT
   title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  '' as "Public",
+  tags ->> 'Public' as "Public",
+  --'' as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --region as "Location",
    cloud_environment || '-' || region as "Location",
@@ -138,8 +140,8 @@ SELECT
   '' as "Diagram Label",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
-  tags ->> 'Application Owner' as "Application Owner",
-  tags ->> 'System Owner' as "System Owner",
+  tags ->> 'Application_Owner' as "Application Owner",
+  tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
@@ -150,12 +152,13 @@ SELECT
   title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  '' as "Public",
+  tags ->> 'Public' as "Public",
+  --'' as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --region as "Location",
    cloud_environment || '-' || region as "Location",
@@ -168,8 +171,8 @@ SELECT
   '' as "Diagram Label",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
-  tags ->> 'Application Owner' as "Application Owner",
-  tags ->> 'System Owner' as "System Owner",
+  tags ->> 'Application_Owner' as "Application Owner",
+  tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
@@ -180,12 +183,13 @@ SELECT
   title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  '' as "Public",
+  tags ->> 'Public' as "Public",
+  --'' as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --region as "Location",
    cloud_environment || '-' || region as "Location",
@@ -202,8 +206,8 @@ substring(
   strpos(aks_agent_pool_profiles."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
   strpos(aks_agent_pool_profiles."VNet", '/subnets/') - strpos(aks_agent_pool_profiles."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
 ) as "VLAN/Network ID",
-  tags ->> 'Application Owner' as "Application Owner",
-  tags ->> 'System Owner' as "System Owner",
+  tags ->> 'Application_Owner' as "Application Owner",
+  tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
@@ -216,12 +220,13 @@ SELECT
   azure_lb.title as "Unique Asset Identifier",
   frontend_ip_configurations -> 0 -> 'properties' ->> 'privateIPAddress' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  text(ip_address) as "Public",
+    azure_lb.tags ->> 'Public' as "Public",
+  --text(ip_address) as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  azure_lb.tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  azure_lb.tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  azure_lb.tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  azure_lb.tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --azure_lb.region as "Location",
    --cloud_environment || '-' || region as "Location",
@@ -241,8 +246,8 @@ SELECT
     strpos(vnets."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
     strpos(vnets."VNet", '/subnets/') - strpos(vnets."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
   ) as "VLAN/Network ID",
-  azure_lb.tags ->> 'Application Owner' as "Application Owner",
-  azure_lb.tags ->> 'System Owner' as "System Owner",
+  azure_lb.tags ->> 'Application_Owner' as "Application Owner",
+  azure_lb.tags ->> 'System_Owner' as "System Owner",
   azure_lb.tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
@@ -255,12 +260,13 @@ select
   azure_nat_gateway.title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  text(ip_address) as "Public",
+   azure_nat_gateway.tags ->> 'Public' as "Public",
+  --text(ip_address) as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  azure_nat_gateway.tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  azure_nat_gateway.tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  azure_nat_gateway.tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  azure_nat_gateway.tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --azure_nat_gateway.region as "Location",
    azure_nat_gateway.cloud_environment || '-' || azure_nat_gateway.region as "Location",
@@ -278,8 +284,8 @@ select
     strpos(vnet_subnet."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
     strpos(vnet_subnet."VNet", '/subnets/') - strpos(vnet_subnet."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
   ) as "VLAN/Network ID",
-  azure_nat_gateway.tags ->> 'Application Owner' as "Application Owner",
-  azure_nat_gateway.tags ->> 'System Owner' as "System Owner",
+  azure_nat_gateway.tags ->> 'Application_Owner' as "Application Owner",
+  azure_nat_gateway.tags ->> 'System_Owner' as "System Owner",
   azure_nat_gateway.tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 from
@@ -292,12 +298,13 @@ SELECT
   title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  '' as "Public",
+  tags ->> 'Public' as "Public",
+  --'' as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --region as "Location",
       cloud_environment || '-' || region as "Location",
@@ -310,8 +317,8 @@ SELECT
   '' as "Diagram Label",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
-  tags ->> 'Application Owner' as "Application Owner",
-  tags ->> 'System Owner' as "System Owner",
+  tags ->> 'Application_Owner' as "Application Owner",
+  tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
@@ -322,12 +329,13 @@ SELECT
   title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  '' as "Public",
+  tags ->> 'Public' as "Public",
+  --'' as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --region as "Location",
       cloud_environment || '-' || region as "Location",
@@ -340,8 +348,8 @@ SELECT
   '' as "Diagram Label",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
-  tags ->> 'Application Owner' as "Application Owner",
-  tags ->> 'System Owner' as "System Owner",
+  tags ->> 'Application_Owner' as "Application Owner",
+  tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
@@ -352,12 +360,13 @@ SELECT
   azure_virtual_network_gateway.title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  text(ip_address) as "Public",
+    azure_virtual_network_gateway.tags ->> 'Public' as "Public",
+  --text(ip_address) as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  azure_virtual_network_gateway.tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  azure_virtual_network_gateway.tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  azure_virtual_network_gateway.tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  azure_virtual_network_gateway.tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --azure_virtual_network_gateway.region as "Location",
      azure_virtual_network_gateway.cloud_environment || '-' || azure_virtual_network_gateway.region as "Location",
@@ -375,8 +384,8 @@ SELECT
     strpos(vnet_subnet_vng."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
     strpos(vnet_subnet_vng."VNet", '/subnets/') - strpos(vnet_subnet_vng."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
   ) as "VLAN/Network ID",
-  azure_virtual_network_gateway.tags ->> 'Application Owner' as "Application Owner",
-  azure_virtual_network_gateway.tags ->> 'System Owner' as "System Owner",
+  azure_virtual_network_gateway.tags ->> 'Application_Owner' as "Application Owner",
+  azure_virtual_network_gateway.tags ->> 'System_Owner' as "System Owner",
   azure_virtual_network_gateway.tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
@@ -391,14 +400,15 @@ select
    WHEN "IP_Type" = 'Private' THEN "IP"
   END as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  CASE
-    WHEN "IP_Type" = 'Public' THEN "IP"
-  END as "Public",
+    tags ->> 'Public' as "Public",
+  --CASE
+   -- WHEN "IP_Type" = 'Public' THEN "IP"
+  --END as "Public",
   '' as "DNS Name or URL",
   computer_name as "NetBIOS Name",
   '' as "MAC Address",
-  tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   os_name as "OS Name and Version",
   cloud_environment || '-' || region as "Location",
   'Azure VM' as "Asset Type",
@@ -414,8 +424,8 @@ select
     strpos(cvm_nic."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
     strpos(cvm_nic."VNet", '/subnets/') - strpos(cvm_nic."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
   ) as "VLAN/Network ID",
-  tags ->> 'Application Owner' as "Application Owner",
-  tags ->> 'System Owner' as "System Owner",
+  tags ->> 'Application_Owner' as "Application Owner",
+  tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
   '' as "End-of-Life"  
 from
@@ -424,26 +434,15 @@ from
       left join cvm_network_interface_subnet cvm_nic ON cvm_nic.network_interface_id =  cvm.network_interfaces -> 0 ->> 'id'
 where
   power_state='running'
+
 	
 
 
-
-
+ 
   EOQ
   title = "FedRAMP Inventory - Azure"
   width = 8
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -542,12 +541,13 @@ SELECT
 	title as "Unique Asset Identifier",
 	'' as "IPv4 or IPv6 Address",
 	  'Yes' as "Virtual",
-	'' as "Public",
+    tags ->> 'Public' as "Public",
+	--'' as "Public",
 	'' as "DNS Name or URL",
 	'' as "NetBIOS Name",
 	'' as "MAC Address",
-	tags ->> 'Authenticated Scan' as "Authenticated Scan",
-	tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+	tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+	tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
 	'' as "OS Name and Version",
    cloud_environment || '-' || region as "Location",
 	'Azure App Service Web App' as "Asset Type",
@@ -563,7 +563,7 @@ substring(
   strpos(webapp_vnet_subnet."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
   strpos(webapp_vnet_subnet."VNet", '/subnets/') - strpos(webapp_vnet_subnet."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
 ) as "VLAN/Network ID",
-	tags ->> 'Application Owner' as "Application Owner",
+	tags ->> 'Application_Owner' as "Application Owner",
 	tags ->> 'System Owner' as "System Owner",
 	tags ->> 'Function' as "Function",
 	'' as "End-of-Life"
@@ -576,12 +576,13 @@ SELECT
   title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  '' as "Public",
+  tags ->> 'Public' as "Public",
+  --'' as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --region as "Location",
    cloud_environment || '-' || region as "Location",
@@ -594,8 +595,8 @@ SELECT
   '' as "Diagram Label",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
-  tags ->> 'Application Owner' as "Application Owner",
-  tags ->> 'System Owner' as "System Owner",
+  tags ->> 'Application_Owner' as "Application Owner",
+  tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
@@ -606,12 +607,13 @@ SELECT
   title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  '' as "Public",
+  tags ->> 'Public' as "Public",
+  --'' as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --region as "Location",
    cloud_environment || '-' || region as "Location",
@@ -624,8 +626,8 @@ SELECT
   '' as "Diagram Label",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
-  tags ->> 'Application Owner' as "Application Owner",
-  tags ->> 'System Owner' as "System Owner",
+  tags ->> 'Application_Owner' as "Application Owner",
+  tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
@@ -636,12 +638,13 @@ SELECT
   title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  '' as "Public",
+  tags ->> 'Public' as "Public",
+  --'' as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --region as "Location",
    cloud_environment || '-' || region as "Location",
@@ -658,8 +661,8 @@ substring(
   strpos(aks_agent_pool_profiles."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
   strpos(aks_agent_pool_profiles."VNet", '/subnets/') - strpos(aks_agent_pool_profiles."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
 ) as "VLAN/Network ID",
-  tags ->> 'Application Owner' as "Application Owner",
-  tags ->> 'System Owner' as "System Owner",
+  tags ->> 'Application_Owner' as "Application Owner",
+  tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
@@ -672,12 +675,13 @@ SELECT
   azure_lb.title as "Unique Asset Identifier",
   frontend_ip_configurations -> 0 -> 'properties' ->> 'privateIPAddress' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  text(ip_address) as "Public",
+    azure_lb.tags ->> 'Public' as "Public",
+  --text(ip_address) as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  azure_lb.tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  azure_lb.tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  azure_lb.tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  azure_lb.tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --azure_lb.region as "Location",
    --cloud_environment || '-' || region as "Location",
@@ -697,8 +701,8 @@ SELECT
     strpos(vnets."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
     strpos(vnets."VNet", '/subnets/') - strpos(vnets."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
   ) as "VLAN/Network ID",
-  azure_lb.tags ->> 'Application Owner' as "Application Owner",
-  azure_lb.tags ->> 'System Owner' as "System Owner",
+  azure_lb.tags ->> 'Application_Owner' as "Application Owner",
+  azure_lb.tags ->> 'System_Owner' as "System Owner",
   azure_lb.tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
@@ -711,12 +715,13 @@ select
   azure_nat_gateway.title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  text(ip_address) as "Public",
+   azure_nat_gateway.tags ->> 'Public' as "Public",
+  --text(ip_address) as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  azure_nat_gateway.tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  azure_nat_gateway.tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  azure_nat_gateway.tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  azure_nat_gateway.tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --azure_nat_gateway.region as "Location",
    azure_nat_gateway.cloud_environment || '-' || azure_nat_gateway.region as "Location",
@@ -734,8 +739,8 @@ select
     strpos(vnet_subnet."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
     strpos(vnet_subnet."VNet", '/subnets/') - strpos(vnet_subnet."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
   ) as "VLAN/Network ID",
-  azure_nat_gateway.tags ->> 'Application Owner' as "Application Owner",
-  azure_nat_gateway.tags ->> 'System Owner' as "System Owner",
+  azure_nat_gateway.tags ->> 'Application_Owner' as "Application Owner",
+  azure_nat_gateway.tags ->> 'System_Owner' as "System Owner",
   azure_nat_gateway.tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 from
@@ -748,12 +753,13 @@ SELECT
   title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  '' as "Public",
+  tags ->> 'Public' as "Public",
+  --'' as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --region as "Location",
       cloud_environment || '-' || region as "Location",
@@ -766,8 +772,8 @@ SELECT
   '' as "Diagram Label",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
-  tags ->> 'Application Owner' as "Application Owner",
-  tags ->> 'System Owner' as "System Owner",
+  tags ->> 'Application_Owner' as "Application Owner",
+  tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
@@ -778,12 +784,13 @@ SELECT
   title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  '' as "Public",
+  tags ->> 'Public' as "Public",
+  --'' as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --region as "Location",
       cloud_environment || '-' || region as "Location",
@@ -796,8 +803,8 @@ SELECT
   '' as "Diagram Label",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
-  tags ->> 'Application Owner' as "Application Owner",
-  tags ->> 'System Owner' as "System Owner",
+  tags ->> 'Application_Owner' as "Application Owner",
+  tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
@@ -808,12 +815,13 @@ SELECT
   azure_virtual_network_gateway.title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  text(ip_address) as "Public",
+    azure_virtual_network_gateway.tags ->> 'Public' as "Public",
+  --text(ip_address) as "Public",
   '' as "DNS Name or URL",
   '' as "NetBIOS Name",
   '' as "MAC Address",
-  azure_virtual_network_gateway.tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  azure_virtual_network_gateway.tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  azure_virtual_network_gateway.tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  azure_virtual_network_gateway.tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   '' as "OS Name and Version",
   --azure_virtual_network_gateway.region as "Location",
      azure_virtual_network_gateway.cloud_environment || '-' || azure_virtual_network_gateway.region as "Location",
@@ -831,8 +839,8 @@ SELECT
     strpos(vnet_subnet_vng."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
     strpos(vnet_subnet_vng."VNet", '/subnets/') - strpos(vnet_subnet_vng."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
   ) as "VLAN/Network ID",
-  azure_virtual_network_gateway.tags ->> 'Application Owner' as "Application Owner",
-  azure_virtual_network_gateway.tags ->> 'System Owner' as "System Owner",
+  azure_virtual_network_gateway.tags ->> 'Application_Owner' as "Application Owner",
+  azure_virtual_network_gateway.tags ->> 'System_Owner' as "System Owner",
   azure_virtual_network_gateway.tags ->> 'Function' as "Function",
   '' as "End-of-Life"
 FROM
@@ -847,14 +855,15 @@ select
    WHEN "IP_Type" = 'Private' THEN "IP"
   END as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-  CASE
-    WHEN "IP_Type" = 'Public' THEN "IP"
-  END as "Public",
+    tags ->> 'Public' as "Public",
+  --CASE
+   -- WHEN "IP_Type" = 'Public' THEN "IP"
+  --END as "Public",
   '' as "DNS Name or URL",
   computer_name as "NetBIOS Name",
   '' as "MAC Address",
-  tags ->> 'Authenticated Scan' as "Authenticated Scan",
-  tags ->> 'Baseline Configuration Name' as "Baseline Configuration Name",
+  tags ->> 'Authenticated_Scan' as "Authenticated Scan",
+  tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
   os_name as "OS Name and Version",
   cloud_environment || '-' || region as "Location",
   'Azure VM' as "Asset Type",
@@ -870,8 +879,8 @@ select
     strpos(cvm_nic."VNet", '/virtualNetworks/') + length('/virtualNetworks/'),
     strpos(cvm_nic."VNet", '/subnets/') - strpos(cvm_nic."VNet", '/virtualNetworks/') - length('/virtualNetworks/')
   ) as "VLAN/Network ID",
-  tags ->> 'Application Owner' as "Application Owner",
-  tags ->> 'System Owner' as "System Owner",
+  tags ->> 'Application_Owner' as "Application Owner",
+  tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
   '' as "End-of-Life"  
 from
@@ -880,6 +889,11 @@ from
       left join cvm_network_interface_subnet cvm_nic ON cvm_nic.network_interface_id =  cvm.network_interfaces -> 0 ->> 'id'
 where
   power_state='running'
+
+	
+
+
+ 
 
 	
 
