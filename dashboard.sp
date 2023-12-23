@@ -2,10 +2,13 @@ dashboard "FedRAMP-Inventory-Dashboard" {
 	title = "FedRAMP Inventory Dashboard"
 
 
-
+container {
+  title = "Charts"
+  width = 12
 chart {
   type  = "bar"
   title = "Assets By OS"
+  width = 6
 
   sql = <<-EOQ
 WITH
@@ -454,6 +457,7 @@ ORDER BY "Inventory Count" DESC
 chart {
   type  = "bar"
   title = "Unique Assets By Type"
+  width = 6
 
   sql = <<-EOQ
 WITH
@@ -1339,7 +1343,7 @@ where
 }
 
 
-
+}
 
 
 
