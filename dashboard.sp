@@ -1000,6 +1000,7 @@ SELECT
 	'' as "Software/Database Name & Version",
 	'' as "Patch Level",
 	'' as "Diagram Label",
+  tags ->> 'Comments' as "Comments",
 	id as "Serial #/Asset Tag#",
 substring(
   webapp_vnet_subnet."VNet",
@@ -1036,6 +1037,7 @@ SELECT
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
+  tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
@@ -1067,6 +1069,7 @@ SELECT
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
+  tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
@@ -1098,6 +1101,7 @@ SELECT
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
+  tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
 substring(
   aks_agent_pool_profiles."VNet",
@@ -1136,7 +1140,7 @@ SELECT
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
-  --azure_lb.tags ->> 'Comments' as "Comments",
+  azure_lb.tags ->> 'Comments' as "Comments",
   '' as "Serial #/Asset Tag#",
   --When position is greater than 0, vnet string contains subnet
   substring(
@@ -1175,7 +1179,7 @@ select
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
-  --azure_nat_gateway.tags ->> 'Comments' as "Comments",
+  azure_nat_gateway.tags ->> 'Comments' as "Comments",
   '' as "Serial #/Asset Tag#",
   substring(
     vnet_subnet."VNet",
@@ -1213,6 +1217,7 @@ SELECT
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
+  tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
@@ -1244,6 +1249,7 @@ SELECT
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
+  tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
@@ -1276,6 +1282,7 @@ SELECT
   vpn_gateway_generation || ':' || sku_tier as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
+  azure_virtual_network_gateway.tags ->> 'Comments' as "Comments",
   azure_virtual_network_gateway.id as "Serial #/Asset Tag#",
   substring(
     vnet_subnet_vng."VNet",
@@ -1316,6 +1323,7 @@ select
   image_sku as "Software/ Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
+  tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   substring(
     cvm_nic."VNet",
@@ -1455,6 +1463,7 @@ SELECT
 	'' as "Software/Database Name & Version",
 	'' as "Patch Level",
 	'' as "Diagram Label",
+  tags ->> 'Comments' as "Comments",
 	id as "Serial #/Asset Tag#",
 substring(
   webapp_vnet_subnet."VNet",
@@ -1491,6 +1500,7 @@ SELECT
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
+  tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
@@ -1522,6 +1532,7 @@ SELECT
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
+  tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
@@ -1553,6 +1564,7 @@ SELECT
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
+  tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
 substring(
   aks_agent_pool_profiles."VNet",
@@ -1591,7 +1603,7 @@ SELECT
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
-  --azure_lb.tags ->> 'Comments' as "Comments",
+  azure_lb.tags ->> 'Comments' as "Comments",
   '' as "Serial #/Asset Tag#",
   --When position is greater than 0, vnet string contains subnet
   substring(
@@ -1630,7 +1642,7 @@ select
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
-  --azure_nat_gateway.tags ->> 'Comments' as "Comments",
+  azure_nat_gateway.tags ->> 'Comments' as "Comments",
   '' as "Serial #/Asset Tag#",
   substring(
     vnet_subnet."VNet",
@@ -1668,6 +1680,7 @@ SELECT
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
+  tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
@@ -1699,6 +1712,7 @@ SELECT
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
+  tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
@@ -1731,6 +1745,7 @@ SELECT
   vpn_gateway_generation || ':' || sku_tier as "Software/Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
+  azure_virtual_network_gateway.tags ->> 'Comments' as "Comments",
   azure_virtual_network_gateway.id as "Serial #/Asset Tag#",
   substring(
     vnet_subnet_vng."VNet",
@@ -1771,6 +1786,7 @@ select
   image_sku as "Software/ Database Name & Version",
   '' as "Patch Level",
   '' as "Diagram Label",
+  tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   substring(
     cvm_nic."VNet",
@@ -1787,7 +1803,6 @@ from
       left join cvm_network_interface_subnet cvm_nic ON cvm_nic.network_interface_id =  cvm.network_interfaces -> 0 ->> 'id'
 where
   power_state='running'
- 
 
 	
 
