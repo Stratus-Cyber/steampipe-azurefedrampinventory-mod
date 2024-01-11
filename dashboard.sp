@@ -1300,7 +1300,11 @@ FROM
 UNION
 --Azure VM Fedramp Inventory
 select 
-  name as "Unique Asset Identifier",
+  --name as "Unique Asset Identifier",
+    CASE
+   WHEN computer_name is not null THEN computer_name
+   ELSE name
+  END as "Unique Asset Identifier",
   CASE
    WHEN "IP_Type" = 'Private' THEN "IP"
   END as "IPv4 or IPv6 Address",
@@ -1310,7 +1314,8 @@ select
    -- WHEN "IP_Type" = 'Public' THEN "IP"
   --END as "Public",
   '' as "DNS Name or URL",
-  computer_name as "NetBIOS Name",
+  '' as "NetBIOS Name",
+    --computer_name as "NetBIOS Name",
   '' as "MAC Address",
   tags ->> 'Authenticated_Scan' as "Authenticated Scan",
   tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
@@ -1763,7 +1768,11 @@ FROM
 UNION
 --Azure VM Fedramp Inventory
 select 
-  name as "Unique Asset Identifier",
+  --name as "Unique Asset Identifier",
+    CASE
+   WHEN computer_name is not null THEN computer_name
+   ELSE name
+  END as "Unique Asset Identifier",
   CASE
    WHEN "IP_Type" = 'Private' THEN "IP"
   END as "IPv4 or IPv6 Address",
@@ -1773,7 +1782,8 @@ select
    -- WHEN "IP_Type" = 'Public' THEN "IP"
   --END as "Public",
   '' as "DNS Name or URL",
-  computer_name as "NetBIOS Name",
+  '' as "NetBIOS Name",
+    --computer_name as "NetBIOS Name",
   '' as "MAC Address",
   tags ->> 'Authenticated_Scan' as "Authenticated Scan",
   tags ->> 'Baseline_Configuration_Name' as "Baseline Configuration Name",
@@ -1803,7 +1813,6 @@ from
       left join cvm_network_interface_subnet cvm_nic ON cvm_nic.network_interface_id =  cvm.network_interfaces -> 0 ->> 'id'
 where
   power_state='running'
-
 	
 
 
