@@ -1307,6 +1307,7 @@ select
   END as "Unique Asset Identifier",
   CASE
    WHEN "IP_Type" = 'Private' THEN "IP"
+   WHEN "IP_Type" = 'Public' THEN "IP"
   END as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
     tags ->> 'Public' as "Public",
@@ -1775,6 +1776,7 @@ select
   END as "Unique Asset Identifier",
   CASE
    WHEN "IP_Type" = 'Private' THEN "IP"
+   WHEN "IP_Type" = 'Public' THEN "IP"
   END as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
     tags ->> 'Public' as "Public",
