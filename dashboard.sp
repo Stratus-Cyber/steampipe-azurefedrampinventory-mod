@@ -999,7 +999,7 @@ SELECT
 	'' as "Software/Database Vendor",
 	'' as "Software/Database Name & Version",
 	'' as "Patch Level",
-	'' as "Diagram Label",
+	tags ->> 'Diagram_Label' as "Diagram Label",
   tags ->> 'Comments' as "Comments",
 	id as "Serial #/Asset Tag#",
 substring(
@@ -1010,7 +1010,7 @@ substring(
 	tags ->> 'Application_Owner' as "Application Owner",
 	tags ->> 'System Owner' as "System Owner",
 	tags ->> 'Function' as "Function",
-	'' as "End-of-Life"
+	tags ->> 'End_Of_life' as "End-of-Life"
 FROM
 	azure_app_service_web_app
 	left join webapp_vnet_subnet ON webapp_vnet_subnet."webapp_id" = azure_app_service_web_app.id
@@ -1036,14 +1036,14 @@ SELECT
   '' as "Software/Database Vendor",
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  tags ->> 'Diagram_Label' as "Diagram Label",
   tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
   tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  tags ->> 'End_Of_life' as "End-of-Life"
 FROM
   azure_cosmosdb_sql_database
 UNION
@@ -1068,14 +1068,14 @@ SELECT
   '' as "Software/Database Vendor",
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  tags ->> 'Diagram_Label' as "Diagram Label",
   tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
   tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  tags ->> 'End_Of_life' as "End-of-Life"
 FROM
   azure_frontdoor
 UNION
@@ -1100,7 +1100,7 @@ SELECT
   '' as "Software/Database Vendor",
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  tags ->> 'Diagram_Label' as "Diagram Label",
   tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
 substring(
@@ -1111,7 +1111,7 @@ substring(
   tags ->> 'Application_Owner' as "Application Owner",
   tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  tags ->> 'End_Of_life' as "End-of-Life"
 FROM
   azure_kubernetes_cluster
   	left join aks_agent_pool_profiles ON aks_agent_pool_profiles."kubernetes_id" = azure_kubernetes_cluster.id
@@ -1139,7 +1139,7 @@ SELECT
   '' as "Software/Database Vendor",
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  azure_lb.tags ->> 'Diagram_Label' as "Diagram Label",
   azure_lb.tags ->> 'Comments' as "Comments",
   '' as "Serial #/Asset Tag#",
   --When position is greater than 0, vnet string contains subnet
@@ -1151,7 +1151,7 @@ SELECT
   azure_lb.tags ->> 'Application_Owner' as "Application Owner",
   azure_lb.tags ->> 'System_Owner' as "System Owner",
   azure_lb.tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  azure_lb.tags ->> 'End_Of_life' as "End-of-Life"
 FROM
   azure_lb
   left join vnets on vnets.lb_id = azure_lb.id
@@ -1178,7 +1178,7 @@ select
   '' as "Software/Database Vendor",
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  azure_nat_gateway.tags ->> 'Diagram_Label' as "Diagram Label",
   azure_nat_gateway.tags ->> 'Comments' as "Comments",
   '' as "Serial #/Asset Tag#",
   substring(
@@ -1189,7 +1189,7 @@ select
   azure_nat_gateway.tags ->> 'Application_Owner' as "Application Owner",
   azure_nat_gateway.tags ->> 'System_Owner' as "System Owner",
   azure_nat_gateway.tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  azure_nat_gateway.tags ->> 'End_Of_life' as "End-of-Life"
 from
   azure_nat_gateway
   left join vnet_subnet ON vnet_subnet."gateway_id" = azure_nat_gateway.id
@@ -1216,14 +1216,14 @@ SELECT
   '' as "Software/Database Vendor",
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  tags ->> 'Diagram_Label' as "Diagram Label",
   tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
   tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  tags ->> 'End_Of_life' as "End-of-Life"
 FROM
   azure_sql_database
 UNION
@@ -1248,14 +1248,14 @@ SELECT
   '' as "Software/Database Vendor",
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  tags ->> 'Diagram_Label' as "Diagram Label",
   tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
   tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  tags ->> 'End_Of_life' as "End-of-Life"
 FROM
   azure_sql_server
 UNION
@@ -1281,7 +1281,7 @@ SELECT
   azure_virtual_network_gateway.type || ':' || azure_virtual_network_gateway.sku_name as "Software/Database Vendor",
   vpn_gateway_generation || ':' || sku_tier as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  azure_virtual_network_gateway.tags ->> 'Diagram_Label' as "Diagram Label",
   azure_virtual_network_gateway.tags ->> 'Comments' as "Comments",
   azure_virtual_network_gateway.id as "Serial #/Asset Tag#",
   substring(
@@ -1292,7 +1292,7 @@ SELECT
   azure_virtual_network_gateway.tags ->> 'Application_Owner' as "Application Owner",
   azure_virtual_network_gateway.tags ->> 'System_Owner' as "System Owner",
   azure_virtual_network_gateway.tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  azure_virtual_network_gateway.tags ->> 'End_Of_life' as "End-of-Life"
 FROM
   azure_virtual_network_gateway
   left join vnet_subnet_vng ON vnet_subnet_vng."gateway_id" = azure_virtual_network_gateway.id
@@ -1328,7 +1328,7 @@ select
   image_offer as "Software/ Database Vendor",
   image_sku as "Software/ Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  tags ->> 'Diagram_Label' as "Diagram Label",
   tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   substring(
@@ -1339,7 +1339,7 @@ select
   tags ->> 'Application_Owner' as "Application Owner",
   tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
-  '' as "End-of-Life"  
+  tags ->> 'End_Of_life' as "End-of-Life"  
 from
       azure_compute_virtual_machine cvm
       left join all_ips ON all_ips.vm_id = cvm.vm_id
@@ -1468,7 +1468,7 @@ SELECT
 	'' as "Software/Database Vendor",
 	'' as "Software/Database Name & Version",
 	'' as "Patch Level",
-	'' as "Diagram Label",
+	tags ->> 'Diagram_Label' as "Diagram Label",
   tags ->> 'Comments' as "Comments",
 	id as "Serial #/Asset Tag#",
 substring(
@@ -1479,7 +1479,7 @@ substring(
 	tags ->> 'Application_Owner' as "Application Owner",
 	tags ->> 'System Owner' as "System Owner",
 	tags ->> 'Function' as "Function",
-	'' as "End-of-Life"
+	tags ->> 'End_Of_life' as "End-of-Life"
 FROM
 	azure_app_service_web_app
 	left join webapp_vnet_subnet ON webapp_vnet_subnet."webapp_id" = azure_app_service_web_app.id
@@ -1505,14 +1505,14 @@ SELECT
   '' as "Software/Database Vendor",
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  tags ->> 'Diagram_Label' as "Diagram Label",
   tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
   tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  tags ->> 'End_Of_life' as "End-of-Life"
 FROM
   azure_cosmosdb_sql_database
 UNION
@@ -1537,14 +1537,14 @@ SELECT
   '' as "Software/Database Vendor",
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  tags ->> 'Diagram_Label' as "Diagram Label",
   tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
   tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  tags ->> 'End_Of_life' as "End-of-Life"
 FROM
   azure_frontdoor
 UNION
@@ -1569,7 +1569,7 @@ SELECT
   '' as "Software/Database Vendor",
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  tags ->> 'Diagram_Label' as "Diagram Label",
   tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
 substring(
@@ -1580,7 +1580,7 @@ substring(
   tags ->> 'Application_Owner' as "Application Owner",
   tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  tags ->> 'End_Of_life' as "End-of-Life"
 FROM
   azure_kubernetes_cluster
   	left join aks_agent_pool_profiles ON aks_agent_pool_profiles."kubernetes_id" = azure_kubernetes_cluster.id
@@ -1608,7 +1608,7 @@ SELECT
   '' as "Software/Database Vendor",
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  azure_lb.tags ->> 'Diagram_Label' as "Diagram Label",
   azure_lb.tags ->> 'Comments' as "Comments",
   '' as "Serial #/Asset Tag#",
   --When position is greater than 0, vnet string contains subnet
@@ -1620,7 +1620,7 @@ SELECT
   azure_lb.tags ->> 'Application_Owner' as "Application Owner",
   azure_lb.tags ->> 'System_Owner' as "System Owner",
   azure_lb.tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  azure_lb.tags ->> 'End_Of_life' as "End-of-Life"
 FROM
   azure_lb
   left join vnets on vnets.lb_id = azure_lb.id
@@ -1647,7 +1647,7 @@ select
   '' as "Software/Database Vendor",
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  azure_nat_gateway.tags ->> 'Diagram_Label' as "Diagram Label",
   azure_nat_gateway.tags ->> 'Comments' as "Comments",
   '' as "Serial #/Asset Tag#",
   substring(
@@ -1658,7 +1658,7 @@ select
   azure_nat_gateway.tags ->> 'Application_Owner' as "Application Owner",
   azure_nat_gateway.tags ->> 'System_Owner' as "System Owner",
   azure_nat_gateway.tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  azure_nat_gateway.tags ->> 'End_Of_life' as "End-of-Life"
 from
   azure_nat_gateway
   left join vnet_subnet ON vnet_subnet."gateway_id" = azure_nat_gateway.id
@@ -1685,14 +1685,14 @@ SELECT
   '' as "Software/Database Vendor",
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  tags ->> 'Diagram_Label' as "Diagram Label",
   tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
   tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  tags ->> 'End_Of_life' as "End-of-Life"
 FROM
   azure_sql_database
 UNION
@@ -1717,14 +1717,14 @@ SELECT
   '' as "Software/Database Vendor",
   '' as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  tags ->> 'Diagram_Label' as "Diagram Label",
   tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   '' as "VLAN/Network ID",
   tags ->> 'Application_Owner' as "Application Owner",
   tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  tags ->> 'End_Of_life' as "End-of-Life"
 FROM
   azure_sql_server
 UNION
@@ -1750,7 +1750,7 @@ SELECT
   azure_virtual_network_gateway.type || ':' || azure_virtual_network_gateway.sku_name as "Software/Database Vendor",
   vpn_gateway_generation || ':' || sku_tier as "Software/Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  azure_virtual_network_gateway.tags ->> 'Diagram_Label' as "Diagram Label",
   azure_virtual_network_gateway.tags ->> 'Comments' as "Comments",
   azure_virtual_network_gateway.id as "Serial #/Asset Tag#",
   substring(
@@ -1761,7 +1761,7 @@ SELECT
   azure_virtual_network_gateway.tags ->> 'Application_Owner' as "Application Owner",
   azure_virtual_network_gateway.tags ->> 'System_Owner' as "System Owner",
   azure_virtual_network_gateway.tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  azure_virtual_network_gateway.tags ->> 'End_Of_life' as "End-of-Life"
 FROM
   azure_virtual_network_gateway
   left join vnet_subnet_vng ON vnet_subnet_vng."gateway_id" = azure_virtual_network_gateway.id
@@ -1797,7 +1797,7 @@ select
   image_offer as "Software/ Database Vendor",
   image_sku as "Software/ Database Name & Version",
   '' as "Patch Level",
-  '' as "Diagram Label",
+  tags ->> 'Diagram_Label' as "Diagram Label",
   tags ->> 'Comments' as "Comments",
   id as "Serial #/Asset Tag#",
   substring(
@@ -1808,7 +1808,7 @@ select
   tags ->> 'Application_Owner' as "Application Owner",
   tags ->> 'System_Owner' as "System Owner",
   tags ->> 'Function' as "Function",
-  '' as "End-of-Life"  
+  tags ->> 'End_Of_life' as "End-of-Life"  
 from
       azure_compute_virtual_machine cvm
       left join all_ips ON all_ips.vm_id = cvm.vm_id
