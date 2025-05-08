@@ -373,7 +373,7 @@ SELECT
   'N/A' as "NetBIOS Name",
   'N/A' as "MAC Address",
   azure_virtual_network_gateway.tags ->> 'Authenticated_Scan' as "Authenticated Scan",
-  azure_virtual_network_gateway.tags ->> 'Baseline_Configuration' as "Baseline Configuration Name",
+  'N/A' as "Baseline Configuration Name",
   'N/A' as "OS Name and Version",
   --azure_virtual_network_gateway.region as "Location",
      azure_virtual_network_gateway.cloud_environment || '-' || azure_virtual_network_gateway.region as "Location",
