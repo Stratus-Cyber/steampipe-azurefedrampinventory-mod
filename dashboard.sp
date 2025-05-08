@@ -366,7 +366,7 @@ UNION
 --Virtual Network gateway Inventory
 SELECT
   azure_virtual_network_gateway.title as "Unique Asset Identifier",
-  '' as "IPv4 or IPv6 Address",
+  azure_virtual_network_gateway.inbound_dns_forwarding_endpoint as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
   azure_virtual_network_gateway.tags ->> 'Public' as "Public",
   azure_virtual_network_gateway.tags ->> 'DNS_Name" as "DNS Name or URL",
