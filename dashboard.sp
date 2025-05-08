@@ -385,6 +385,7 @@ SELECT
   'N/A' as "Software/Database Name & Version",
   'N/A' as "Patch Level",
   'Azure Application Gateway' as "Diagram Label",
+  azure_virtual_network_gateway.tags ->> 'Comments' as "Comments",
   azure_virtual_network_gateway.id as "Serial #/Asset Tag#",
   substring(
     vnet_subnet_vng."VNet",
