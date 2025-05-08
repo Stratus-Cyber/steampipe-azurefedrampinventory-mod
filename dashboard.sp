@@ -368,24 +368,23 @@ SELECT
   azure_virtual_network_gateway.title as "Unique Asset Identifier",
   '' as "IPv4 or IPv6 Address",
   'Yes' as "Virtual",
-    azure_virtual_network_gateway.tags ->> 'Public' as "Public",
-  --text(ip_address) as "Public",
-  '' as "DNS Name or URL",
-  '' as "NetBIOS Name",
-  '' as "MAC Address",
+  azure_virtual_network_gateway.tags ->> 'Public' as "Public",
+  azure_virtual_network_gateway.tags ->> 'DNS_Name" as "DNS Name or URL",
+  'N/A' as "NetBIOS Name",
+  'N/A' as "MAC Address",
   azure_virtual_network_gateway.tags ->> 'Authenticated_Scan' as "Authenticated Scan",
   azure_virtual_network_gateway.tags ->> 'Baseline_Configuration' as "Baseline Configuration Name",
-  '' as "OS Name and Version",
+  'N/A' as "OS Name and Version",
   --azure_virtual_network_gateway.region as "Location",
      azure_virtual_network_gateway.cloud_environment || '-' || azure_virtual_network_gateway.region as "Location",
 
-  'Azure VNet Gateway' as "Asset Type",
-  '' as "Hardware Make/Model",
-  '' as "In Latest Scan",
-  azure_virtual_network_gateway.type || ':' || azure_virtual_network_gateway.sku_name as "Software/Database Vendor",
-  vpn_gateway_generation || ':' || sku_tier as "Software/Database Name & Version",
-  '' as "Patch Level",
-  '' as "Diagram Label",
+  'Azure Application Gateway' as "Asset Type",
+  azure_virtual_network_gateway.type || ':' || azure_virtual_network_gateway.sku_name || ':' || azure_virtual_network_gateway.sku_tier || ':' || vpn_gateway_generation || ':' || sku_tier as "Hardware Make/Model",
+  'Yes' as "In Latest Scan",
+  'N/A' as "Software/Database Vendor",
+  'N/A' as "Software/Database Name & Version",
+  'N/A' as "Patch Level",
+  'Azure Application Gateway' as "Diagram Label",
   azure_virtual_network_gateway.id as "Serial #/Asset Tag#",
   substring(
     vnet_subnet_vng."VNet",
@@ -395,7 +394,7 @@ SELECT
   azure_virtual_network_gateway.tags ->> 'Application_Owner' as "Application Owner",
   azure_virtual_network_gateway.tags ->> 'System_Owner' as "System Owner",
   azure_virtual_network_gateway.tags ->> 'Function' as "Function",
-  '' as "End-of-Life"
+  'N/A' as "End-of-Life"
 FROM
   azure_virtual_network_gateway
   left join vnet_subnet_vng ON vnet_subnet_vng."gateway_id" = azure_virtual_network_gateway.id
